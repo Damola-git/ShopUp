@@ -29,7 +29,7 @@ double get totalAmount {
     _items.forEach((key, cartItem) {
       total += cartItem.price * cartItem.quantity;
     });
-    return total;
+    return double.parse(total.toStringAsFixed(2));
   }
 
   void addItem(
@@ -61,9 +61,13 @@ double get totalAmount {
     }
     notifyListeners();
   }
-  
+
     void removeItem(String productId) {
     _items.remove(productId);
     notifyListeners();
   }
-}
+
+  void clear()  {
+    _items = {};
+    notifyListeners();
+  }}
