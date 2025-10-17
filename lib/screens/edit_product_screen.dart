@@ -123,7 +123,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       listen: false,
     ).updateProduct(_editedProduct.id, _editedProduct);
 
-    Navigator.of(context).pop(); // close 
+    Navigator.of(context).pop();
     Navigator.of(context).pop(); 
   } else {
     await Provider.of<Products>(
