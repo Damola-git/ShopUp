@@ -124,7 +124,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     ).updateProduct(_editedProduct.id, _editedProduct);
 
     Navigator.of(context).pop(); // close dialog
-    Navigator.of(context).pop(); // close screen
+    Navigator.of(context).pop(); 
   } else {
     await Provider.of<Products>(
       context,
