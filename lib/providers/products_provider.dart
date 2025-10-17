@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import './product.dart';
 
@@ -102,6 +105,33 @@ class Products with ChangeNotifier {
     ),
   ];
 
+Future<void> addProduct(Product product) {
+    final url = Uri.parse('https://project-1-4a49d-default-rtdb.firebaseio.com/products.json');
+    return http
+        .post(
+      url,
+      body: json.encode({
+        'title': product.title,
+        'description': product.description,
+        'imageUrl': product.imageUrl,
+        'price': product.price,
+        'isFavorite': product.isFavorite,
+      }),
+    )
+        .then((response) {
+      final newProduct = Product(
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        id: json.decode(response.body)['name'],
+      );
+      _items.add(newProduct);
+      // _items.insert(0, newProduct); // at the start of the list
+      notifyListeners();
+    });
+  }
+
   List<Product> get items {
     return [..._items];
   }
@@ -112,9 +142,32 @@ class Products with ChangeNotifier {
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
+ 
 
-  void addProduct() {
-    // _items.add(value);
+ Future<void> updateProduct(String id, Product newProduct) async {
+  final prodIndex = _items.indexWhere((prod) => prod.id == id);
+  if (prodIndex >= 0) {
+    final url = Uri.parse('https://project-1-4a49d-default-rtdb.firebaseio.com/products/$id.json');
+    await http.patch(
+      url,
+      body: json.encode({
+        'title': newProduct.title,
+        'description': newProduct.description,
+        'imageUrl': newProduct.imageUrl,
+        'price': newProduct.price,
+      }),
+    );
+    _items[prodIndex] = newProduct;
+    notifyListeners();
+  } else {
+    print('Product not found');
+  }
+}
+
+
+
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
 }
