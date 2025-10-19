@@ -97,10 +97,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   _form.currentState?.save();
 
-  // show uploading dialog
+  
   showDialog(
     context: context,
-    barrierDismissible: false, // user can't close it manually
+    barrierDismissible: false, 
     builder: (ctx) => const AlertDialog(
       content: Row(
         children: [

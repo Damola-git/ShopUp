@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-
 import './cart.dart';
 
 class OrderItem {
@@ -12,10 +10,10 @@ class OrderItem {
   final DateTime dateTime;
 
   OrderItem({
-   required this.id,
-   required this.amount,
-   required this.products,
-   required this.dateTime,
+    required this.id,
+    required this.amount,
+    required this.products,
+    required this.dateTime,
   });
 }
 
@@ -27,15 +25,18 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> fetchAndSetOrders() async {
-    final url = Uri.parse('https://project-1-4a49d-default-rtdb.firebaseio.com/orders.json');
+    final url = Uri.parse(
+      'https://project-1-4a49d-default-rtdb.firebaseio.com/orders.json',
+    );
     final response = await http.get(url);
-    final List<OrderItem> loadedOrders = [];
-    final extractedData = json.decode(response.body) as Map<String, dynamic>;
-    // ignore: dead_code
+    final extractedData = json.decode(response.body);
+
     if (extractedData == null) {
       return;
     }
-    extractedData.forEach((orderId, orderData) {
+
+    final List<OrderItem> loadedOrders = [];
+    (extractedData as Map<String, dynamic>).forEach((orderId, orderData) {
       loadedOrders.add(
         OrderItem(
           id: orderId,
@@ -44,11 +45,11 @@ class Orders with ChangeNotifier {
           products: (orderData['products'] as List<dynamic>)
               .map(
                 (item) => CartItem(
-                      id: item['id'],
-                      price: item['price'],
-                      quantity: item['quantity'],
-                      title: item['title'],
-                    ),
+                  id: item['id'],
+                  price: item['price'],
+                  quantity: item['quantity'],
+                  title: item['title'],
+                ),
               )
               .toList(),
         ),
@@ -59,7 +60,9 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
-    final url = Uri.https('flutter-update.firebaseio.com', '/orders.json');
+    final url = Uri.parse(
+      'https://project-1-4a49d-default-rtdb.firebaseio.com/orders.json',
+    );
     final timestamp = DateTime.now();
     final response = await http.post(
       url,
