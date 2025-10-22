@@ -16,14 +16,14 @@ class AuthScreen extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        // 🌈 Instagram-like gradient background
+       
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFFFD297B),
-              Color(0xFFFF5864),
-              Color(0xFFFF655B),
-              Color(0xFFFF8C00),
+              Color.fromARGB(255, 99, 68, 80),
+              Color.fromARGB(255, 188, 139, 142),
+              Color.fromARGB(255, 103, 74, 71),
+              Color.fromARGB(255, 123, 109, 91),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -38,7 +38,7 @@ class AuthScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: 70),
                   
-                  // 🔶 Modern gradient-border container for title
+                  
                   Container(
                     padding: const EdgeInsets.all(3), // border thickness
                     decoration: BoxDecoration(
@@ -59,8 +59,8 @@ class AuthScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(17),
                         gradient: const LinearGradient(
                           colors: [
-                            Color(0xFFFCF7F8),
-                            Color(0xFFFDF2F8),
+                            Color.fromARGB(255, 192, 181, 183),
+                            Color.fromARGB(255, 194, 157, 177),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -76,8 +76,8 @@ class AuthScreen extends StatelessWidget {
                       child: ShaderMask(
                         shaderCallback: (bounds) => const LinearGradient(
                           colors: [
-                            Color.fromARGB(255, 22, 2, 3),
-                            Color(0xFFFFC371),
+                            Color.fromARGB(255, 21, 16, 17),
+                            Color.fromARGB(255, 32, 27, 21),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
