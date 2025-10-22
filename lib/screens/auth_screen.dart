@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth.dart';
@@ -16,27 +15,90 @@ class AuthScreen extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-      body: Center(
-        child: SingleChildScrollView(
-          child: SizedBox(
-            width: deviceSize.width > 500 ? 400 : deviceSize.width * 0.9,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                
-                Text(
-                  'ShopUp',
-                  style: TextStyle(
-                    color: Colors.orange.shade800,
-                    fontFamily: 'Anton',
-                    fontSize: 50,
-                    letterSpacing: 1,
+      body: Container(
+        // 🌈 Instagram-like gradient background
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFFFD297B),
+              Color(0xFFFF5864),
+              Color(0xFFFF655B),
+              Color(0xFFFF8C00),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: SizedBox(
+              width: deviceSize.width > 500 ? 400 : deviceSize.width * 0.9,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 70),
+                  
+                  // 🔶 Modern gradient-border container for title
+                  Container(
+                    padding: const EdgeInsets.all(3), // border thickness
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [
+                          Color(0xFFFFC371),
+                          Color(0xFFFF5F6D),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 18),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(17),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFFFCF7F8),
+                            Color(0xFFFDF2F8),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 12,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: ShaderMask(
+                        shaderCallback: (bounds) => const LinearGradient(
+                          colors: [
+                            Color.fromARGB(255, 22, 2, 3),
+                            Color(0xFFFFC371),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ).createShader(bounds),
+                        child: const Text(
+                          'ShopUp',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Anton',
+                            fontSize: 46,
+                            letterSpacing: 2,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 30),
-                const AuthCard(),
-              ],
+                  
+                  const SizedBox(height: 50),
+                  const AuthCard(),
+                ],
+              ),
             ),
           ),
         ),
@@ -101,7 +163,7 @@ class _AuthCardState extends State<AuthCard> {
         errorMessage = 'Invalid password.';
       }
       _showErrorDialog(errorMessage);
-    } catch (error) {
+    } catch (_) {
       _showErrorDialog('Could not authenticate you. Try again later.');
     }
 
@@ -118,64 +180,46 @@ class _AuthCardState extends State<AuthCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 6,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      color: Colors.white.withOpacity(0.9),
+      elevation: 10,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
         padding: const EdgeInsets.all(20),
-        height: _authMode == AuthMode.Signup ? 360 : 280,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.email_outlined),
-                  labelText: 'Email Address',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: InputDecoration(
+                    prefixIcon:
+                        const Icon(Icons.email_outlined, color: Colors.black87),
+                    labelText: 'Email Address',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    filled: true,
+                    fillColor: Colors.grey.shade100,
                   ),
-                  filled: true,
-                  fillColor: Colors.grey.shade100,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        !value.contains('@')) {
+                      return 'Enter a valid email.';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => _authData['email'] = value!,
                 ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      !value.contains('@')) {
-                    return 'Enter a valid email.';
-                  }
-                  return null;
-                },
-                onSaved: (value) => _authData['email'] = value!,
-              ),
-              const SizedBox(height: 15),
-              TextFormField(
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.lock_outline),
-                  labelText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey.shade100,
-                ),
-                obscureText: true,
-                controller: _passwordController,
-                validator: (value) {
-                  if (value == null || value.length < 6) {
-                    return 'Password must be 6+ characters.';
-                  }
-                  return null;
-                },
-                onSaved: (value) => _authData['password'] = value!,
-              ),
-              if (_authMode == AuthMode.Signup) ...[
                 const SizedBox(height: 15),
                 TextFormField(
                   decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.lock_person_outlined),
-                    labelText: 'Confirm Password',
+                    prefixIcon:
+                        const Icon(Icons.lock_outline, color: Colors.black87),
+                    labelText: 'Password',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -183,54 +227,80 @@ class _AuthCardState extends State<AuthCard> {
                     fillColor: Colors.grey.shade100,
                   ),
                   obscureText: true,
+                  controller: _passwordController,
                   validator: (value) {
-                    if (value != _passwordController.text) {
-                      return 'Passwords do not match.';
+                    if (value == null || value.length < 6) {
+                      return 'Password must be 6+ characters.';
                     }
                     return null;
                   },
+                  onSaved: (value) => _authData['password'] = value!,
+                ),
+                if (_authMode == AuthMode.Signup) ...[
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.lock_person_outlined,
+                          color: Colors.black87),
+                      labelText: 'Confirm Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey.shade100,
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value != _passwordController.text) {
+                        return 'Passwords do not match.';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+                const SizedBox(height: 25),
+                if (_isLoading)
+                  const CircularProgressIndicator(color: Colors.orange)
+                else
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed: _submit,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF5F6D),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 5,
+                      ),
+                      child: Text(
+                        _authMode == AuthMode.Login
+                            ? 'Sign In'
+                            : 'Create Account',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 10),
+                GestureDetector(
+                  onTap: _switchAuthMode,
+                  child: Text(
+                    _authMode == AuthMode.Login
+                        ? "New to ShopUp? Create an account"
+                        : "Already have an account? Sign In",
+                    style: const TextStyle(
+                      color: Color(0xFFFF5F6D),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ],
-              const SizedBox(height: 25),
-              if (_isLoading)
-                const CircularProgressIndicator()
-              else
-                SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: _submit,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange.shade800,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      _authMode == AuthMode.Login
-                          ? 'Sign In'
-                          : 'Create Account',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              const SizedBox(height: 10),
-              GestureDetector(
-                onTap: _switchAuthMode,
-                child: Text(
-                  _authMode == AuthMode.Login
-                      ? "New to MyShop? Create an account"
-                      : "Already have an account? Sign In",
-                  style: TextStyle(
-                    color: Colors.orange.shade800,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
