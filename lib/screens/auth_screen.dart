@@ -15,90 +15,50 @@ class AuthScreen extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Container(
-       
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 99, 68, 80),
-              Color.fromARGB(255, 188, 139, 142),
-              Color.fromARGB(255, 103, 74, 71),
-              Color.fromARGB(255, 123, 109, 91),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            child: SizedBox(
-              width: deviceSize.width > 500 ? 400 : deviceSize.width * 0.9,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 70),
-                  
-                  
-                  Container(
-                    padding: const EdgeInsets.all(3), // border thickness
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xFFFFC371),
-                          Color(0xFFFF5F6D),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(20),
+      backgroundColor: const Color(0xFF0F111A), // dark crypto-style background
+      body: Center(
+        child: SingleChildScrollView(
+          child: SizedBox(
+            width: deviceSize.width > 500 ? 400 : deviceSize.width * 0.9,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 60),
+                // 🔷 Modern crypto-styled ShopUp title container
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.orange.shade800.withOpacity(0.85),
+                        Colors.deepOrangeAccent.withOpacity(0.85),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 18),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(17),
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color.fromARGB(255, 192, 181, 183),
-                            Color.fromARGB(255, 194, 157, 177),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 12,
-                            offset: const Offset(0, 5),
-                          ),
-                        ],
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.orange.shade800.withOpacity(0.3),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
                       ),
-                      child: ShaderMask(
-                        shaderCallback: (bounds) => const LinearGradient(
-                          colors: [
-                            Color.fromARGB(255, 21, 16, 17),
-                            Color.fromARGB(255, 32, 27, 21),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ).createShader(bounds),
-                        child: const Text(
-                          'ShopUp',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Anton',
-                            fontSize: 46,
-                            letterSpacing: 2,
-                          ),
-                        ),
-                      ),
+                    ],
+                  ),
+                  child: Text(
+                    'ShopUp',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Anton',
+                      fontSize: 48,
+                      letterSpacing: 2,
                     ),
                   ),
-                  
-                  const SizedBox(height: 50),
-                  const AuthCard(),
-                ],
-              ),
+                ),
+                const SizedBox(height: 40),
+                const AuthCard(),
+              ],
             ),
           ),
         ),
@@ -180,14 +140,14 @@ class _AuthCardState extends State<AuthCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white.withOpacity(0.9),
+      color: const Color(0xFF1B1E29),
       elevation: 10,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
         padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
+        child: SingleChildScrollView( // ✅ FIXED SCROLLABLE FORM
           child: Form(
             key: _formKey,
             child: Column(
@@ -195,14 +155,21 @@ class _AuthCardState extends State<AuthCard> {
                 TextFormField(
                   decoration: InputDecoration(
                     prefixIcon:
-                        const Icon(Icons.email_outlined, color: Colors.black87),
+                        const Icon(Icons.email_outlined, color: Colors.white70),
                     labelText: 'Email Address',
+                    labelStyle: const TextStyle(color: Colors.white70),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.white24, width: 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     filled: true,
-                    fillColor: Colors.grey.shade100,
+                    fillColor: const Color(0xFF2A2E3D),
                   ),
+                  style: const TextStyle(color: Colors.white),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null ||
@@ -218,16 +185,23 @@ class _AuthCardState extends State<AuthCard> {
                 TextFormField(
                   decoration: InputDecoration(
                     prefixIcon:
-                        const Icon(Icons.lock_outline, color: Colors.black87),
+                        const Icon(Icons.lock_outline, color: Colors.white70),
                     labelText: 'Password',
+                    labelStyle: const TextStyle(color: Colors.white70),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.white24, width: 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     filled: true,
-                    fillColor: Colors.grey.shade100,
+                    fillColor: const Color(0xFF2A2E3D),
                   ),
                   obscureText: true,
                   controller: _passwordController,
+                  style: const TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value == null || value.length < 6) {
                       return 'Password must be 6+ characters.';
@@ -241,15 +215,22 @@ class _AuthCardState extends State<AuthCard> {
                   TextFormField(
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.lock_person_outlined,
-                          color: Colors.black87),
+                          color: Colors.white70),
                       labelText: 'Confirm Password',
+                      labelStyle: const TextStyle(color: Colors.white70),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: Colors.white24, width: 1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       filled: true,
-                      fillColor: Colors.grey.shade100,
+                      fillColor: const Color.fromARGB(255, 44, 48, 61),
                     ),
                     obscureText: true,
+                    style: const TextStyle(color: Colors.white),
                     validator: (value) {
                       if (value != _passwordController.text) {
                         return 'Passwords do not match.';
@@ -268,7 +249,7 @@ class _AuthCardState extends State<AuthCard> {
                     child: ElevatedButton(
                       onPressed: _submit,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFF5F6D),
+                        backgroundColor: Colors.orange.shade800,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -293,9 +274,9 @@ class _AuthCardState extends State<AuthCard> {
                     _authMode == AuthMode.Login
                         ? "New to ShopUp? Create an account"
                         : "Already have an account? Sign In",
-                    style: const TextStyle(
-                      color: Color(0xFFFF5F6D),
-                      fontWeight: FontWeight.w600,
+                    style: TextStyle(
+                      color: Colors.orange.shade400,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
