@@ -126,7 +126,7 @@ class Products with ChangeNotifier {
         'https://project-1-4a49d-default-rtdb.firebaseio.com/userFavorites/$userId.json?auth=$authToken',
       );
       final favoriteResponse = await http.get(url);
-      
+      final favoriteData = json.decode(favoriteResponse.body);
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
@@ -135,7 +135,9 @@ class Products with ChangeNotifier {
             title: prodData['title'],
             description: prodData['description'],
             price: (prodData['price'] as num).toDouble(),
-            isFavorite: prodData['isFavorite'] ?? false,
+            isFavorite: favoriteData == null
+                ? false
+                : favoriteData[prodId] ?? false,
             imageUrl: prodData['imageUrl'],
           ),
         );

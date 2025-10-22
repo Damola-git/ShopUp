@@ -83,12 +83,11 @@ fonts:
          - asset: assets/fonts/Anton-Regular.ttf
          - asset: assets/fonts/Anton-Bold.ttf
            weight: 700
-  #         
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
+
+         - family: Lato
+           fonts:
+             - asset: fonts/Lato-Regular.ttf
+             - asset: fonts/Lato-Bold.ttf
+               weight: 700
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

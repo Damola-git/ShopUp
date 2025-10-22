@@ -15,7 +15,7 @@ class AuthScreen extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0F111A), // dark crypto-style background
+      backgroundColor: const Color(0xFF0F111A), 
       body: Center(
         child: SingleChildScrollView(
           child: SizedBox(
@@ -24,7 +24,7 @@ class AuthScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 60),
-                // 🔷 Modern crypto-styled ShopUp title container
+               
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
@@ -51,6 +51,7 @@ class AuthScreen extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white,
                       fontFamily: 'Anton',
+                      fontWeight: FontWeight.normal,
                       fontSize: 48,
                       letterSpacing: 2,
                     ),
