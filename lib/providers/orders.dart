@@ -19,14 +19,19 @@ class OrderItem {
 
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
+  final String userId;
+  final String authToken;
 
   List<OrderItem> get orders {
     return [..._orders];
   }
+  
+
+   Orders( this.authToken, this.userId, this._orders)
 
   Future<void> fetchAndSetOrders() async {
     final url = Uri.parse(
-      'https://project-1-4a49d-default-rtdb.firebaseio.com/orders.json',
+      'https://project-1-4a49d-default-rtdb.firebaseio.com/orders/$userId.json?auth=$authToken',
     );
     final response = await http.get(url);
     final extractedData = json.decode(response.body);
