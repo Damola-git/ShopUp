@@ -12,6 +12,7 @@ import 'screens/product_overview.dart';
 import 'screens/user_products_screen.dart';
 import 'screens/edit_product_screen.dart';
 import 'screens/auth_screen.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (ctx) => Auth()),
         ChangeNotifierProxyProvider<Auth, Products>(
-          create: (ctx) => Products('', '', []), 
+          create: (ctx) => Products('', '', []),
           update: (ctx, auth, previousProducts) => Products(
             auth.token ?? '',
             auth.userId ?? '',
@@ -32,7 +33,14 @@ class MyApp extends StatelessWidget {
           ),
         ),
         ChangeNotifierProvider(create: (ctx) => Cart()),
-        ChangeNotifierProvider(create: (ctx) => Orders()),
+        ChangeNotifierProxyProvider<Auth, Orders>(
+          create: (ctx) => Orders('', '', []),
+          update: (ctx, auth, previousOrders) => Orders(
+            auth.token ?? '',
+            auth.userId ?? '',
+            previousOrders == null ? [] : previousOrders.orders,
+          ),
+        ),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
@@ -43,7 +51,16 @@ class MyApp extends StatelessWidget {
             hintColor: Colors.deepOrange,
             fontFamily: 'Lato',
           ),
-          home: auth.isAuth ? ProductOverview() : AuthScreen(),
+          home: auth.isAuth
+              ? ProductOverview()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, authResultSnapshot) =>
+                      authResultSnapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? SplashScreen()
+                          : AuthScreen(),
+                ),
           routes: {
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),
